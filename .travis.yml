@@ -1,0 +1,31 @@
+sudo: false
+language: cpp
+cache: ccache
+
+matrix:
+  include:
+    - compiler: gcc
+      dist: trusty
+
+addons:
+  apt:
+    # Please keep this list sorted alphabetically
+    packages:
+      - autoconf
+      - automake
+      - gsoap
+      - libgsoap-dev
+      - libical-dev
+      - libvmime-dev
+      - python-dev
+      - swig
+
+before_script:
+  - ./bootstrap.sh
+
+script:
+  # Many unit tests still fail on macOS, and there are a bunch of issues with
+  # syntax-check as well, so skip those steps on that platform for now
+  - ./configure --without-php
+  - make -j3
+
